@@ -96,6 +96,7 @@ sap.ui.define([
                 await context.created();
                 MessageToast.show("Material criado");
                 this.onCarregarMateriais();
+                this._dialogNovoMaterial.close();
 
             } catch (error) {
                 let sMsg = "Erro ao criar material";
