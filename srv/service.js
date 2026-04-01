@@ -12,20 +12,29 @@ module.exports = cds.service.impl(async function () {
 
     this.before('CREATE', 'Materiais', async (req) => {
 
+        // Gerar ID automático
         const result = await SELECT.one
             .from('empresaXPTO.Materiais')
             .columns('max(ID) as maxID');
 
         req.data.ID = (result?.maxID || 0) + 1;
 
-        const existe = await SELECT.one
+        let existe = null;
+
+        // Verificar se NumMat já existe
+        existe = await SELECT.one
             .from('empresaXPTO.Materiais')
             .where({ NumMat: req.data.NumMat });
 
-        if (existe) {
-            req.error(409, `Material ${req.data.NumMat} já existe`);
+        if (existe !== null && existe !== undefined) {
+            req.error({
+                code: 409,
+                message: `Material com o número ${req.data.NumMat} já existe!`,
+                target: 'NumMat'
+            });
         }
 
+        existe = null;
     });
 
     this.on('CREATE', 'Materiais', async (req) => {

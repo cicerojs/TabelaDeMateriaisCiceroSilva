@@ -32,7 +32,7 @@
 						<Text text="ID"/>
 					</Column>
 					<Column>
-						<Text text="Material"/>
+						<Text text="Nro. Material"/>
 					</Column>
 					<Column>
 						<Text text="Nome"/>
