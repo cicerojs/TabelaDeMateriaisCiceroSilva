@@ -1,0 +1,43 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        id="dialogmNovoMaterial"
+        title="Novo Material"
+        draggable="true"
+        resizable="true">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <Label text="Número do Material" required="true"/>
+                <Input
+                    id="inputNumMat"
+                     value="{mNovoMaterial>/NumMat}"
+                    type="Number"
+                    placeholder="Digite o número do material"/>
+
+                <Label text="Nome" required="true"/>
+                <Input
+                    id="inputNome"
+                    value="{mNovoMaterial>/Nome}"
+                    placeholder="Digite o nome"/>
+                <Label text="Descrição" required="true"/>
+                <Input
+                    id="inputDescr"
+                    value="{mNovoMaterial>/Descr}"
+                    placeholder="Digite a descrição"/>
+            </VBox>
+        </content>
+        <beginButton>
+            <Button
+                text="Salvar"
+                type="Emphasized"
+                press="onSalvarMaterial"/>
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancelar"
+                press="onCancelarMaterial"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
