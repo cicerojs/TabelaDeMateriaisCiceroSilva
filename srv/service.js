@@ -32,16 +32,6 @@ module.exports = cds.service.impl(async function () {
         const { Materiais } = this.entities;
         const { ID, NumMat, Nome, Descr } = req.data;
 
-        if (!NumMat) {
-            req.error(400, "Número do material é obrigatório");
-        }
-
-        const existe = await SELECT.one.from(Materiais).where({ NumMat });
-
-        if (existe) {
-            req.error(409, `Material ${NumMat} já existe`);
-        }
-
         const novoMaterial = {
             ID,
             NumMat,
