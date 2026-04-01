@@ -1,0 +1,57 @@
+<mvc:View controllerName="listcadastromateriais.controller.ListMateriais"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+			<Table
+				id="materiaisTable"
+				items="{mMateriais>/}">
+				<headerToolbar>
+                <Toolbar>
+                    <Title text="Lista de Materiais" level="H2"/>
+                    <ToolbarSpacer/>
+                    <Input
+                        id="inputQtd"
+						value="{mFiltroMaterial>/qtde}"
+                        width="120px"
+                        type="Number"
+                        placeholder="Qtd"/>
+                    <Button
+                        text="Filtrar"
+                        press="onCarregarMateriais"
+                        icon="sap-icon://filter"/>
+                    <Button
+                        text="Novo Material"
+                        type="Emphasized"
+                        icon="sap-icon://add"
+                        press="onNovoMaterial"/>
+                </Toolbar>
+            </headerToolbar>
+				<columns>
+					<Column>
+						<Text text="ID"/>
+					</Column>
+					<Column>
+						<Text text="Nro. Material"/>
+					</Column>
+					<Column>
+						<Text text="Nome"/>
+					</Column>
+					<Column>
+						<Text text="Descrição"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{mMateriais>ID}"/>
+							<Text text="{mMateriais>NumMat}"/>
+							<Text text="{mMateriais>Nome}"/>
+							<Text text="{mMateriais>Descr}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+    </Page>
+</mvc:View>
