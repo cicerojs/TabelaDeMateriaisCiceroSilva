@@ -69,6 +69,10 @@ sap.ui.define([
         onSalvarMaterial: async function () {
             const oModel = this.getOwnerComponent().getModel();
             const oViewModel = this.getView().getModel("mNovoMaterial");
+            const oMessageManager = sap.ui.getCore().getMessageManager();
+
+            // limpa mensagens antigas
+            oMessageManager.removeAllMessages();
 
             // Validações básicas
             const iNroMaterial = oViewModel.getProperty("/NumMat");
@@ -95,24 +99,22 @@ sap.ui.define([
                 // Envia a requisição para o backend (executa o before CREATE)
                 await oModel.submitBatch(oModel.getUpdateGroupId() || "$auto");
 
-                /**
-                 * Tentei capturar a mensagem de erro status code 409. Caputura, porém
-                 * no sap.ui.getCore().getMessageManager().removeAllMessages() abaixo
-                 * limpa todas as mensagens, não obtendo-as novam
-                 */
+                // lê mensagens retornadas pelo CAP
+                const aMessages = oMessageManager.getMessageModel().getData();
+                const aErrors = aMessages.filter(m => m.type === "Error");
 
-                // let sPath = Object.keys(oModel.mMessages)[0]
+                if (aErrors.length > 0) {
+                    MessageBox.error(aErrors[0].message, {
+                        title: "Não foi possível criar o material",
+                        styleClass: "sapUiSizeCompact"
+                    });
 
-                // if (sPath && oModel.mMessages[sPath].length > 0) {
-                //     MessageBox.error(oModel.mMessages[sPath][0].getMessage(), {
-                //         title: "Não foi possível criar o material",
-                //         styleClass: "sapUiSizeCompact"
-                //     });
-
-                //     // Limpa qualquer mensagem antiga
-                //     sap.ui.getCore().getMessageManager().removeAllMessages();
-                //     return
-                // }
+                    //REMOVE o contexto que falhou
+                    if (oContext) {
+                        oContext.delete();
+                    }
+                    return;
+                }
 
                 // ====================== SUCESSO ======================
                 MessageToast.show("Material criado com sucesso!");
@@ -120,11 +122,8 @@ sap.ui.define([
                 this.onCarregarMateriais();
                 this._dialogNovoMaterial.close();
                 oViewModel.setData({});
-
-                
-
             } catch (oError) {
-                console.error("Erro no submitBatch:", oError);
+                console.log("Erro no submitBatch:", oError);
             }
         }
     });
